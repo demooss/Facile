@@ -1,5 +1,12 @@
+/**
+ * Body 데이터 값 저장
+ */
 let body = document.querySelector('body').innerHTML;
 
+/**
+ * 데이터 바인딩
+ * @returns 바인딩된 데이터 값
+ */
 const App = () => {
     let ret = body;
     body.match(/{? ?{.*}? ?}/g).forEach((e) => {
@@ -12,6 +19,7 @@ const App = () => {
 
         let t = e;
 
+        // input Value 받아옴
         document.querySelectorAll('[bind-value]').forEach((v)=>{
             if(v.value){
                 if(isNaN(v.value)){
@@ -27,8 +35,10 @@ const App = () => {
         t = t.replaceAll('}','');
         t =  new Function(`return ${t}`)();
 
+        // input이 변경될때마다 실행
         window.addEventListener('input',()=>{
             let m = e;
+            // input Value 받아옴
             document.querySelectorAll('[bind-value]').forEach((v)=>{
                 if(v.value){
                     if(isNaN(v.value)){
