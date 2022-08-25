@@ -18,7 +18,7 @@ Build web apps quickly and simply
 
 ## 데이터 바인딩
 그냥 따라치세요.
-```
+```html
      <p>{{ op.t }}</p>
 
     <script>
@@ -62,6 +62,8 @@ Build web apps quickly and simply
 > 
 > `{{ }}`안에서는 데이터 바인딩만 가능해요
 
+## 불친절한 문서
+돈이 안되서 그냥 불친절하게 할껍니다
 
 ## 기능 요청
 만든지 2일된거에 뭘 더 요구하시게요
