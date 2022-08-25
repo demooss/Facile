@@ -4,6 +4,11 @@ Build web apps quickly and simply
 ~~웹 느려져도 Facile 문제 절대아님. 성능이수ㅠ없음. 그냥 없다 치셈~~
 
 ## 설치
+
+### CDN
+```
+  https://cdn.jsdelivr.net/gh/demooss/Facile@1.0.0/dist/facile.js
+```
 그냥 자바스크립트 가져오는것 처럼 똑같이 가져오세요.
 
 어디 둬도 상관 없는데 그냥 head 태그 안에 두세요
