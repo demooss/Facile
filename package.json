@@ -1,0 +1,11 @@
+{
+  "name": "facile",
+  "version": "1.0.0",
+  "description": "Build web apps quickly and simply",
+  "main": "facile.js",
+  "keywords": [
+    "web"
+  ],
+  "author": "DE:MO",
+  "license": "MIT"
+}
