@@ -82,6 +82,8 @@
                         }
                     });
                     m = new Function(`return ${m}`)();
+
+                    // 바인딩한 데이터가 기존 데이터와 다른 부분만 교체
                     if(document.querySelector(`.${className}`).innerHTML != m){
                         document.querySelector(`.${className}`).innerHTML = m;  
                     }
@@ -95,7 +97,8 @@
             });
             return ret;
         };
-    
+        
+        // 로딩된 처음 1회만 실행되어야함
         document.querySelector('body').innerHTML = App();
     })
 })();
