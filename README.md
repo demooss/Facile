@@ -26,22 +26,21 @@ Build web apps quickly and simply
             t:"어머나 세상에"
         }
     </script>
-    <script src="./index.js"></script>
 ```
 이렇게 치면 당연히 `{{ op.t }}` 부분에 `어머나 세상에` 가 들어가지않을까요
 
 **+2022년 8월 25일 업데이트**
-기존에는 전체 DOM이 수정되었지만 이제는 변경된 부분만 바뀝니다
+> 기존에는 전체 DOM이 수정되었지만 이제는 변경된 부분만 바뀝니다
 
 ## 더하기
-```
+```html
   <p>{{ 1+2 }}</p>
 ```
 수학 잘 하시면 `{{ 1+2 }}` 부분에 뭐가 들어갈지 당연히 아실꺼에요
 
 ## 인풋 Value 바인딩
 첫번째 인풋에 쓴거랑 두번째 인풋에 쓴것을 더해봅시다
-```
+```html
     <input type="text" bind-value="test1">
     <input type="text" bind-value="test2">
 
