@@ -29,7 +29,11 @@
                         t = t.replaceAll(v.getAttribute('bind-value'),  v.value);
                     }
                 }else{
-                    t = t.replaceAll(v.getAttribute('bind-value'),  '0');
+                    if(v.type == "number"){
+                        t = t.replaceAll(v.getAttribute('bind-value'),  '0');
+                    }else{
+                        t = t.replaceAll(v.getAttribute('bind-value'),  '"Null"');
+                    }
                 }
             });
             t = t.replaceAll('{','');
@@ -53,7 +57,11 @@
                                 m = m.replaceAll(attributeValue,  v.value);
                             }
                         }else{
-                            m = m.replaceAll(attributeValue,  '0');
+                            if(v.type == "number"){
+                                m = m.replaceAll(v.getAttribute('bind-value'),  '0');
+                            }else{
+                                m = m.replaceAll(v.getAttribute('bind-value'),  '"Null"');
+                            }
                         }
                     }
                 });
