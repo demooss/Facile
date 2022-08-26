@@ -1,98 +1,105 @@
 /**
+ * Facile.js
  * Copyright (c) 2022 DE:MO
  * MIT License
  * Github : https://github.com/demooss/undefined
  */
- (()=>{
+(()=>{
     addEventListener('load',()=>{
-        const component = (elementName, element) => {
-            customElements.define(elementName, class extends HTMLElement {
-                constructor() {
-                    super();
-                    this.outerHTML = element;
-                }
-            });
-        };
-
-        document.querySelectorAll('template').forEach((el)=>{
-            component(el.getAttribute('name'), el.innerHTML);
-        });
-        
         /**
-         * Body 기본 내용 저장
+         * Body 데이터 값 저장
          */
         let body = document.querySelector('body').innerHTML;
-
+    
         /**
-         * "{{ }}" 문법이 포함된 엘리먼트를 반환합니다.
-         * @returns "{{ }}" 문법이 포함된 엘리먼트를 Array로 반환
+         * 데이터 바인딩
+         * @returns 바인딩된 데이터 값
          */
-        const findByText = () => {
-            return [...document.querySelectorAll('*')].reduce(
-                (acc, val) => {
-                for (const {
-                    nodeType,
-                    textContent,
-                    parentElement
-                    } of val.childNodes) {
-                    if (nodeType === 3 && textContent.match(/\{\{([^}]+)\}\}/g) && !(parentElement.tagName === 'SCRIPT')) acc.push(parentElement);
-                }
-                return acc;
-                }, []
-            );
-        };
-
-        /**
-         * 바인딩 문법이 포함된 엘리먼트 Array
-         */
-        let bindElement = findByText();
-
-        /**
-         * Facile 데이터바인딩 기본
-         */
-        const facile = () => {
-
-            findByText().forEach((e)=>{
-                e.innerText.match(/\{\{([^}]+)\}\}/g).forEach((el)=>{
-                    let t = el;
-                    t = t.replaceAll('{','');
-                    t = t.replaceAll('}','');
-                    t = new Function(`return ${t}`)();
-                    let text = e.innerText.replaceAll(el, t);
-                    
-                    if(e.innerText != text){
-                        e.innerText = text;
+        const App = () => {
+            let ret = body;
+            // {{}} 문법으로 작성된 부분을 찾음
+            body.match(/\{\{([^}]+)\}\}/g).forEach((e) => {
+                const classNameChars = 'ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+                var className = "";
+                for (let i = 0; i < 8; i++) {
+                const rnum = Math.floor(Math.random() * classNameChars.length)
+                className += classNameChars.substring(rnum, rnum + 1)
+                };
+    
+                // 데이터가 꼬이지않도록 t로 복제
+                let t = e;
+    
+                // input Value 받아옴
+                document.querySelectorAll('[bind-value]').forEach((v)=>{
+                    if(v.value){
+                        // 숫자인지 판단
+                        if(isNaN(v.value)){
+                            t = t.replaceAll(v.getAttribute('bind-value'),  `\"${v.value}\"`);
+                        }else{
+                            t = t.replaceAll(v.getAttribute('bind-value'),  v.value);
+                        }
+                    }else{
+                        // 인풋의 타입이 number 일때 데이터가 없을경우 0으로 설정
+                        if(v.type == "number"){
+                            t = t.replaceAll(v.getAttribute('bind-value'),  '0');
+                        }else{
+                            // 그 외 타입은 데이터가 없을경우 Null
+                            t = t.replaceAll(v.getAttribute('bind-value'),  '"Null"');
+                        }
                     }
                 });
-            });
-        };
+                t = t.replaceAll('{','');
+                t = t.replaceAll('}','');
+                t = new Function(`return ${t}`)();
+    
+                // input이 변경될때마다 실행
+                window.addEventListener('input',()=>{
+                    let m = e;
+                    let attributeValue = "";
+                    // 데이터 바인딩 문법에서 {{}}를 지움
+                    m = m.replaceAll('{','');
+                    m = m.replaceAll('}','');
+    
+                    // input Value 받아옴
+                    document.querySelectorAll('[bind-value]').forEach((v)=>{
+                        attributeValue = v.getAttribute('bind-value');
+                        if(m.matchAll(attributeValue)){
+                            if(v.value){
+                                // 숫자인지 판단
+                                if(isNaN(v.value)){
+                                    m = m.replaceAll(attributeValue,  `\"${v.value}\"`);
+                                }else{
+                                    m = m.replaceAll(attributeValue,  v.value);
+                                }
+                            }else{
+                                // 인풋의 타입이 number 일 경우 초기값은 0으로 설정
+                                if(v.type == "number"){
+                                    m = m.replaceAll(v.getAttribute('bind-value'),  '0');
+                                }else{
+                                    // 그 외 타입은 데이터가 없을경우 Null
+                                    m = m.replaceAll(v.getAttribute('bind-value'),  '"Null"');
+                                }
+                            }
+                        }
+                    });
+                    m = new Function(`return ${m}`)();
 
-        facile();
-        document.querySelector('body').innerHTML.match(/\{\{([^}]+)\}\}/g).forEach((el)=>{
-            let t = el;
-            t = t.replaceAll('{','');
-            t = t.replaceAll('}','');
-            t = new Function(`return ${t}`)();
-            document.querySelector('body').innerHTML = document.querySelector('body').innerHTML.replaceAll(el, t);
-        });
-
-        window.addEventListener('input',()=>{
-            console.log(bindElement);
-            document.querySelectorAll('[bind-value]').forEach((e)=>{
-                if(e.value){
-                    new Function(`${e.getAttribute('bind-value')} = "${e.value}"`)();
-                }
-                body.match(/\{\{([^}]+)\}\}/g).forEach((el)=>{
-                    let t = el;
-                    t = t.replaceAll('{','');
-                    t = t.replaceAll('}','');
-                    t = new Function(`return ${t}`)();
-                    let text = e.innerText.replaceAll(el, t);
-                    
-                    
+                    // 바인딩한 데이터가 기존 데이터와 다른 부분만 교체
+                    if(document.querySelector(`.${className}`).innerHTML != m){
+                        document.querySelector(`.${className}`).innerHTML = m;  
+                    }
                 });
+    
+                if(t != undefined){
+                    ret = ret.replaceAll(e,`<span class="${className}">${t}</span>`);
+                }else{
+                    ret = ret.replaceAll(e,``);
+                }
             });
-            facile();
-        });
+            return ret;
+        };
+        
+        // 로딩된 처음 1회만 실행되어야함
+        document.querySelector('body').innerHTML = App();
     })
 })();
